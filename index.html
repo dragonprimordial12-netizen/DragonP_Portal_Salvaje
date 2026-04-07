@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+<title>🐉 DRAGÓN PRIMORDIAL · Portal Salvaje</title>
+<meta name="description" content="El portal definitivo de Dragón Primordial: Bestias y Monstruos, Galería de Arte, Generador con IA y más. Únete a la Era Salvaje.">
+<meta name="keywords" content="Dragon Primordial, Bestias y Monstruos, Roblox, arte, generador IA, donaciones">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;600;700&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #050305;
+    color: #e8d5b0;
+    font-family: 'Cinzel', serif;
+    overflow-x: hidden;
+    cursor: crosshair;
+  }
+  #particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(5,3,5,0.95); backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(255,80,0,0.2);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.6rem 1.5rem; gap: 0.8rem; flex-wrap: wrap;
+  }
+  .nav-logo {
+    font-family: 'Cinzel Decorative', serif; font-size: 0.75rem;
+    background: linear-gradient(90deg, #ff8c00, #ffd700);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    white-space: nowrap;
+  }
+  .nav-links { display: flex; gap: 0.3rem; flex-wrap: wrap; align-items: center; }
+  .nav-links a {
+    color: #907060; text-decoration: none; font-size: 0.55rem;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 0.35rem 0.6rem; transition: color 0.2s;
+  }
+  .nav-links a:hover { color: #ff8c00; }
+  .nav-play {
+    background: linear-gradient(135deg, #ff4500, #ff8c00); color: #fff;
+    padding: 0.4rem 1rem; font-size: 0.55rem; letter-spacing: 0.12em;
+    clip-path: polygon(5px 0%, 100% 0%, calc(100% - 5px) 100%, 0% 100%);
+    text-decoration: none; margin-left: 0.3rem;
+  }
+  .nav-play:hover { background: linear-gradient(135deg, #ff6a00, #ffaa00); transform: translateY(-1px); }
+
+  /* HERO */
+  .hero {
+    position: relative; min-height: 85vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; z-index: 1; padding: 6rem 2rem 3rem;
+    background: radial-gradient(ellipse 80% 60% at 50% 80%, rgba(180,40,0,0.2) 0%, transparent 70%);
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Crect width='60' height='60' fill='none'/%3E%3Cpath d='M0 0 L60 60 M60 0 L0 60' stroke='rgba(255,120,0,0.03)' stroke-width='0.5'/%3E%3C/svg%3E") repeat;
+    pointer-events: none;
+  }
+  .eyebrow { font-size: 0.65rem; letter-spacing: 0.5em; color: #ff8c00; text-transform: uppercase; margin-bottom: 1rem; animation: fadeDown 1s ease both; }
+  h1 {
+    font-family: 'Cinzel Decorative', serif; font-size: clamp(1.8rem, 7vw, 4.8rem);
+    background: linear-gradient(160deg, #ffe680 0%, #ff8c00 35%, #ff2200 65%, #9b00ff 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 30px rgba(255,100,0,0.5));
+    animation: blazeIn 1.2s ease both;
+  }
+  .hero-tagline { margin-top: 1rem; font-family: 'IM Fell English', serif; font-style: italic; font-size: clamp(0.9rem, 2vw, 1.2rem); color: #d4b88a; max-width: 600px; margin-left: auto; margin-right: auto; }
+  .cta-group { display: flex; gap: 1rem; margin-top: 2rem; flex-wrap: wrap; justify-content: center; animation: fadeUp 1.4s ease both 0.3s; }
+  .btn {
+    font-family: 'Cinzel', serif; font-size: 0.7rem; letter-spacing: 0.2em;
+    text-transform: uppercase; padding: 0.8rem 2rem; text-decoration: none;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    transition: all 0.25s;
+  }
+  .btn-fire { background: linear-gradient(135deg, #ff4500, #ff8c00); color: #fff; box-shadow: 0 0 20px rgba(255,80,0,0.4); }
+  .btn-fire:hover { transform: translateY(-2px); box-shadow: 0 0 35px rgba(255,120,0,0.6); }
+  .btn-ghost { background: transparent; border: 1px solid rgba(255,140,0,0.4); color: #ff8c00; }
+  .btn-ghost:hover { background: rgba(255,100,0,0.1); transform: translateY(-2px); }
+
+  /* SCROLL HINT */
+  .scroll-hint { position: absolute; bottom: 1.5rem; left: 50%; transform: translateX(-50%); opacity: 0.5; animation: float 2s ease-in-out infinite; font-size: 0.6rem; letter-spacing: 0.3em; color: #ff8c00; display: flex; flex-direction: column; align-items: center; gap: 0.3rem; }
+  .scroll-hint::after { content: '▼'; font-size: 0.7rem; }
+
+  /* SECTIONS */
+  section { position: relative; z-index: 1; padding: 4rem 2rem; max-width: 1200px; margin: 0 auto; }
+  .section-title { font-family: 'Cinzel Decorative', serif; font-size: clamp(1.2rem, 3vw, 1.8rem); text-align: center; margin-bottom: 0.5rem; color: #ffd700; text-shadow: 0 0 15px rgba(255,215,0,0.3); }
+  .section-sub { text-align: center; font-family: 'IM Fell English', serif; font-style: italic; color: #a08060; margin-bottom: 2.5rem; font-size: 0.9rem; }
+
+  /* CARDS GRID */
+  .portal-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.8rem; }
+  .portal-card {
+    background: linear-gradient(145deg, rgba(20,8,5,0.9), rgba(10,3,15,0.9));
+    border: 1px solid rgba(255,140,0,0.15);
+    padding: 2rem 1.5rem;
+    text-align: center;
+    transition: all 0.3s;
+    clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
+    cursor: pointer;
+    text-decoration: none;
+    display: block;
+    color: inherit;
+  }
+  .portal-card:hover { transform: translateY(-6px); border-color: rgba(255,140,0,0.5); box-shadow: 0 15px 40px rgba(255,80,0,0.2); }
+  .portal-icon { font-size: 3rem; display: block; margin-bottom: 1rem; filter: drop-shadow(0 0 12px rgba(255,150,0,0.5)); }
+  .portal-card h3 { font-size: 1rem; letter-spacing: 0.1em; margin-bottom: 0.6rem; color: #ffd700; }
+  .portal-card p { font-family: 'IM Fell English', serif; font-style: italic; font-size: 0.8rem; color: #a08060; line-height: 1.5; }
+
+  /* DONATION SECTION */
+  .donation-box {
+    background: linear-gradient(135deg, rgba(139,0,0,0.2), rgba(74,0,128,0.2));
+    border: 2px solid rgba(255,215,0,0.3);
+    border-radius: 0;
+    clip-path: polygon(16px 0%, 100% 0%, calc(100% - 16px) 100%, 0% 100%);
+    padding: 2rem;
+    margin: 2rem auto;
+    text-align: center;
+    max-width: 600px;
+  }
+  .donation-box h3 { font-family: 'Cinzel Decorative', serif; color: #ffd700; margin-bottom: 0.5rem; font-size: 1.3rem; }
+  .donation-box .bank-name { font-size: 0.9rem; color: #ff8c00; letter-spacing: 0.15em; margin: 0.5rem 0; }
+  .donation-account {
+    background: rgba(0,0,0,0.6);
+    padding: 1rem;
+    margin: 1rem 0;
+    border: 1px dashed rgba(255,215,0,0.4);
+    font-family: monospace;
+    font-size: 1.4rem;
+    letter-spacing: 0.1em;
+    color: #ffd700;
+    word-break: break-all;
+  }
+  .donation-copy {
+    background: rgba(255,140,0,0.2);
+    border: none;
+    color: #ffd700;
+    padding: 0.5rem 1.2rem;
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    clip-path: polygon(5px 0%, 100% 0%, calc(100% - 5px) 100%, 0% 100%);
+    transition: all 0.2s;
+  }
+  .donation-copy:hover { background: rgba(255,140,0,0.4); }
+  .donation-thanks { font-size: 0.7rem; color: #c0a080; margin-top: 1rem; font-style: italic; }
+
+  /* SOCIAL GRID */
+  .social-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.8rem; margin-top: 1.5rem; }
+  .social-link {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.6rem 1.2rem;
+    background: rgba(255,80,0,0.05);
+    border: 1px solid rgba(255,140,0,0.2);
+    color: #a08060;
+    text-decoration: none;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+    transition: all 0.25s;
+  }
+  .social-link:hover { color: #ffd700; border-color: #ff8c00; background: rgba(255,100,0,0.1); transform: translateY(-2px); }
+
+  /* DIVIDER */
+  .divider { width: 100%; height: 2px; background: linear-gradient(90deg, transparent, #ff4d00, #ffd700, #ff4d00, transparent); position: relative; z-index: 1; margin: 0.5rem 0; }
+  .divider::before { content: '⚔'; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); background: #050305; padding: 0 1rem; color: #ffd700; font-size: 0.9rem; }
+
+  /* LORE STRIP */
+  .lore-strip { background: linear-gradient(135deg, rgba(60,0,0,0.4), rgba(30,0,60,0.4)); border: 1px solid rgba(255,80,0,0.15); padding: 2rem; text-align: center; max-width: 800px; margin: 0 auto; position: relative; z-index: 1; }
+  .lore-strip p { font-family: 'IM Fell English', serif; font-style: italic; font-size: 0.95rem; line-height: 1.8; color: #c8a878; }
+  .highlight { color: #ffd700; font-style: normal; font-weight: bold; }
+
+  /* FOOTER */
+  footer { text-align: center; padding: 2rem; font-size: 0.65rem; color: #5a4030; border-top: 1px solid rgba(255,80,0,0.1); position: relative; z-index: 1; }
+
+  /* ANIMATIONS */
+  @keyframes fadeDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes blazeIn { from { opacity: 0; transform: scale(0.85); filter: blur(10px); } to { opacity: 1; transform: scale(1); filter: none; } }
+  @keyframes float { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(-6px); } }
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: #050305; }
+  ::-webkit-scrollbar-thumb { background: #8b0000; border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<canvas id="particles"></canvas>
+
+<nav>
+  <span class="nav-logo">🐉 DRAGÓN PRIMORDIAL</span>
+  <div class="nav-links">
+    <a href="#portales">🌐 Portales</a>
+    <a href="#donar">❤️ Donar</a>
+    <a href="#redes">📣 Redes</a>
+    <a href="https://www.roblox.com/es/games/103451711855402/BESTIAS-Y-MONSTRUOS" target="_blank" class="nav-play">⚔ JUGAR ROBLOX</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <p class="eyebrow">🐉 Dragón Primordial · La Era Salvaje</p>
+  <h1>🔥 PORTAL<br>DEL DRAGÓN 🔥</h1>
+  <p class="hero-tagline">
+    Un solo lugar para todo: Bestias y Monstruos, Galería de Arte,<br>
+    Generador con IA y más. Elige tu destino.
+  </p>
+  <div class="cta-group">
+    <a href="https://www.roblox.com/es/games/103451711855402/BESTIAS-Y-MONSTRUOS" class="btn btn-fire" target="_blank">⚔ JUGAR BESTIAS Y MONSTRUOS</a>
+    <a href="#portales" class="btn btn-ghost">🌋 EXPLORAR PORTALES</a>
+  </div>
+  <div class="scroll-hint">DESCUBRE</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- SECCIÓN DE PORTALES / LINKS PRINCIPALES -->
+<section id="portales">
+  <h2 class="section-title reveal">🌐 PORTALES DEL DRAGÓN</h2>
+  <p class="section-sub reveal">Accede a todos mis mundos desde aquí</p>
+  <div class="portal-grid reveal">
+    <a href="https://www.roblox.com/es/games/103451711855402/BESTIAS-Y-MONSTRUOS" target="_blank" class="portal-card">
+      <span class="portal-icon">🐲🔥</span>
+      <h3>BESTIAS Y MONSTRUOS</h3>
+      <p>Juego de Roblox · Elige tu bestia · Domina la Era Salvaje</p>
+    </a>
+    <a href="#" id="galeriaLink" class="portal-card" onclick="alert('📸 La galería de dibujos estará disponible pronto como sitio independiente. Mientras, sígueme en TikTok @geni2012_'); return false;">
+      <span class="portal-icon">🎨✏️</span>
+      <h3>GALERÍA DE DIBUJOS</h3>
+      <p>Todas las obras de geni2012_ · Comisiones abiertas</p>
+    </a>
+    <a href="#" id="generadorLink" class="portal-card" onclick="alert('✨ El Generador de Arte con IA estará disponible pronto en su propia web. Por ahora, usa los comandos en Discord o TikTok'); return false;">
+      <span class="portal-icon">✨🖼️</span>
+      <h3>GENERADOR DE ARTE IA</h3>
+      <p>Crea imágenes con inteligencia artificial · Gratis</p>
+    </a>
+    <a href="https://www.atom.bio/dragonprimordial12" target="_blank" class="portal-card">
+      <span class="portal-icon">🔗⚡</span>
+      <h3>ATOM.BIO · ENLACES</h3>
+      <p>Todos mis links en un solo lugar · atom.bio/dragonprimordial12</p>
+    </a>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SECCIÓN DE DONACIONES (BANCO PICHINCHA) -->
+<section id="donar">
+  <h2 class="section-title reveal">❤️ APOYA AL DRAGÓN</h2>
+  <p class="section-sub reveal">Tu apoyo mantiene vivo este universo</p>
+  
+  <div class="donation-box reveal">
+    <h3>🐉 DONACIONES VOLUNTARIAS</h3>
+    <p style="font-size:0.8rem; margin-bottom:0.8rem;">Cualquier granito de arena es bienvenido y ayuda a seguir creando contenido, arte y el juego.</p>
+    <div class="bank-name">🏦 BANCO PICHINCHA · ECUADOR</div>
+    <div class="donation-account" id="accountNumber">2215350861</div>
+    <button class="donation-copy" onclick="copyAccount()">📋 COPIAR NÚMERO DE CUENTA</button>
+    <div class="donation-thanks">
+      <span style="color:#ffd700;">Cuenta de ahorro transaccional</span><br>
+      ¡Gracias por ser parte de la Era Salvaje! 🔥
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SECCIÓN DE REDES SOCIALES -->
+<section id="redes">
+  <h2 class="section-title reveal">📣 SÍGUEME EN TODAS PARTES</h2>
+  <p class="section-sub reveal">Únete a la comunidad del Dragón Primordial</p>
+  <div class="social-grid reveal">
+    <a class="social-link" href="https://www.tiktok.com/@dragonprimordial?lang=es" target="_blank"><span>🎵</span> TikTok</a>
+    <a class="social-link" href="https://x.com/dragonprimordia" target="_blank"><span>𝕏</span> Twitter</a>
+    <a class="social-link" href="https://www.instagram.com/dragonprimordial/" target="_blank"><span>📸</span> Instagram</a>
+    <a class="social-link" href="https://www.threads.com/@dragonprimordial" target="_blank"><span>🧵</span> Threads</a>
+    <a class="social-link" href="https://www.facebook.com/profile.php?id=61575355656190" target="_blank"><span>📘</span> Facebook</a>
+    <a class="social-link" href="https://discord.com/channels/1489401096530301128/1489401098518139032" target="_blank"><span>💬</span> Discord</a>
+    <a class="social-link" href="https://www.youtube.com/@Drag%C3%B3nPrimordial" target="_blank"><span>▶️</span> YouTube</a>
+    <a class="social-link" href="https://www.tiktok.com/@geni2012_" target="_blank"><span>✏️</span> geni2012_ (Dibujos)</a>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- LORE / MENSAJE -->
+<div class="lore-strip reveal" style="margin: 2rem auto;">
+  <p>
+    🔥 <span class="highlight">"Un mundo salvaje lleno de Bestias y Monstruos te aguarda."</span> 🔥<br><br>
+    Este es el portal central del Dragón Primordial. Desde aquí puedes acceder a todo:<br>
+    el juego de Roblox, la galería de arte, el generador con IA y todas mis redes sociales.<br><br>
+    <span class="highlight">¡Gracias por ser parte de esta aventura!</span> 🐉
+  </p>
+</div>
+
+<!-- CTA FINAL -->
+<div style="text-align:center; padding: 1rem 2rem 3rem; position:relative; z-index:1;">
+  <a href="https://www.roblox.com/es/games/103451711855402/BESTIAS-Y-MONSTRUOS" class="btn btn-fire" target="_blank" style="font-size:0.85rem; padding:1rem 2.5rem;">
+    ⚔ ENTRAR AL JUEGO EN ROBLOX
+  </a>
+</div>
+
+<footer>
+  <span>🐉 DRAGÓN PRIMORDIAL</span> · Bestias y Monstruos · Arte · IA · Comunidad<br>
+  <span style="font-size:0.6rem;">© 2024 - La Era Salvaje te espera 🔥</span><br>
+  <span style="font-size:0.55rem;">Banco Pichincha · Cuenta 2215350861 · Apoya el arte y el juego</span>
+</footer>
+
+<script>
+  // ==================== PARTICULAS (FUEGO) ====================
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d');
+  let W = canvas.width = window.innerWidth;
+  let H = canvas.height = window.innerHeight;
+  window.addEventListener('resize', () => { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; });
+
+  const embers = Array.from({ length: 100 }, () => ({
+    x: Math.random() * W, y: H + Math.random() * 100,
+    size: Math.random() * 2.5 + 0.5, speed: Math.random() * 0.7 + 0.2,
+    drift: (Math.random() - 0.5) * 0.4, alpha: Math.random() * 0.6 + 0.1,
+    hue: Math.random() * 50 + 10
+  }));
+
+  function drawEmbers() {
+    ctx.clearRect(0, 0, W, H);
+    embers.forEach(e => {
+      e.y -= e.speed;
+      e.x += e.drift;
+      e.alpha += (Math.random() - 0.5) * 0.02;
+      e.alpha = Math.max(0.05, Math.min(0.7, e.alpha));
+      if (e.y < -10) { e.y = H + 10; e.x = Math.random() * W; }
+      ctx.beginPath();
+      ctx.arc(e.x, e.y, e.size, 0, Math.PI * 2);
+      ctx.fillStyle = `hsla(${e.hue}, 100%, 60%, ${e.alpha})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(drawEmbers);
+  }
+  drawEmbers();
+
+  // ==================== COPIAR CUENTA ====================
+  function copyAccount() {
+    const account = document.getElementById('accountNumber').innerText;
+    navigator.clipboard.writeText(account).then(() => {
+      showToast('📋 ¡Cuenta copiada! Número: ' + account);
+    }).catch(() => {
+      alert('Número de cuenta: ' + account);
+    });
+  }
+
+  function showToast(msg) {
+    // Crear toast temporal
+    let toast = document.getElementById('dynamicToast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'dynamicToast';
+      toast.style.position = 'fixed';
+      toast.style.bottom = '2rem';
+      toast.style.left = '50%';
+      toast.style.transform = 'translateX(-50%)';
+      toast.style.backgroundColor = 'rgba(0,0,0,0.9)';
+      toast.style.color = '#ffd700';
+      toast.style.border = '1px solid #ff8c00';
+      toast.style.padding = '0.7rem 1.5rem';
+      toast.style.fontFamily = "'Cinzel', serif";
+      toast.style.fontSize = '0.7rem';
+      toast.style.letterSpacing = '0.1em';
+      toast.style.zIndex = '9999';
+      toast.style.borderRadius = '0';
+      toast.style.clipPath = "polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%)";
+      toast.style.backdropFilter = 'blur(8px)';
+      document.body.appendChild(toast);
+    }
+    toast.textContent = msg;
+    toast.style.opacity = '1';
+    setTimeout(() => { toast.style.opacity = '0'; }, 2500);
+  }
+
+  // ==================== REVEAL ON SCROLL ====================
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // ==================== EFECTO HOVER EN CARDS ====================
+  document.querySelectorAll('.portal-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const rect = card.getBoundingClientRect();
+      card.style.setProperty('--mx', ((e.clientX - rect.left) / rect.width * 100) + '%');
+      card.style.setProperty('--my', ((e.clientY - rect.top) / rect.height * 100) + '%');
+    });
+  });
+
+  // ==================== CONTADOR DE VISITAS SIMPLE ====================
+  let visitCount = localStorage.getItem('dp_visitCount') || 0;
+  visitCount = parseInt(visitCount) + 1;
+  localStorage.setItem('dp_visitCount', visitCount);
+  console.log(`🐉 Visitas totales: ${visitCount}`);
+</script>
+</body>
+</html>
